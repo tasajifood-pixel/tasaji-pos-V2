@@ -2972,7 +2972,7 @@ return;
   // ==========================
   // ONLINE MODE → SUPABASE
   // ==========================
-  let q = supabase
+  let q = sb
     .from("master_items")
     .select("item_id,item_code,item_name,thumbnail,sell_price,barcode,available_qty",{ count:"exact" })
     .order("item_name",{ascending:true});
@@ -4570,7 +4570,7 @@ updateTxnCount(list.length);
   const fromIdx = (TXN_PAGE - 1) * TXN_PAGE_SIZE;
   const toIdx   = fromIdx + TXN_PAGE_SIZE - 1;
 
-  let q = supabase
+  let q = sb
     .from("pos_sales_orders")
     .select(`
       salesorder_no,
@@ -5600,6 +5600,7 @@ Object.entries(appliedObj).forEach(([k, amt]) => {
 
 </body>
 </html>
+
 
 
 
