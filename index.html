@@ -20,6 +20,7 @@ function logout() {
 </script>
 
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tasaji POS</title>
 <link rel="icon" type="image/png" href="favicon.png?v=2">
 <link rel="shortcut icon" href="favicon.png?v=2">
@@ -1383,6 +1384,179 @@ body{
 .logout-btn:hover {
   background: #fdeaea;
   border-color: #f5c6c6;
+}
+
+/* =====================================================
+   RESPONSIVE: MOBILE (<=768px)
+===================================================== */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .pos-wrapper {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .pos-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+
+  .pos-main {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .left-panel {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .left-tabs {
+    width: 100%;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 8px;
+    overflow-x: auto;
+    position: sticky;
+    top: 56px;
+    z-index: 25;
+    padding: 10px;
+  }
+
+  .left-tabs-menu,
+  .left-tabs-footer {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .tab-btn {
+    min-width: 76px;
+    flex: 0 0 auto;
+  }
+
+  .left-content {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .product-panel,
+  .txn-panel,
+  .report-panel,
+  .setting-panel {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .product-toolbar {
+    position: sticky;
+    top: 120px;
+    z-index: 20;
+    background: var(--bg);
+    padding: 8px 0;
+  }
+
+  .product-grid {
+    max-height: 55vh;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .cart-panel {
+    min-width: auto;
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #ddd;
+    padding: 12px;
+  }
+
+  .cart-items {
+    max-height: 40vh;
+  }
+
+  .payment-wrapper,
+  .txn-body {
+    flex-direction: column;
+  }
+
+  .txn-list,
+  .txn-detail {
+    min-width: auto;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .txn-list {
+    overflow-x: auto;
+  }
+
+  .txn-item {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .txn-col {
+    white-space: normal;
+  }
+
+  .rpt-table {
+    overflow-x: auto;
+    display: block;
+  }
+
+  .rpt-row {
+    min-width: 720px;
+  }
+
+  .customer-dropdown {
+    position: fixed;
+    top: 56px;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  .product-grid,
+  .cart-items,
+  .txn-list-items,
+  #productGrid,
+  #cartItems,
+  #txnList {
+    overflow-y: auto;
+  }
+
+  .btn,
+  .btn-cari,
+  .btn-cashier,
+  button,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .qty-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .search-input input {
+    height: 44px;
+    line-height: 44px;
+    font-size: 16px;
+  }
+
+  .cart-customer input,
+  .set-row input[type="text"],
+  .set-row input[type="number"],
+  .set-row select,
+  .set-block textarea {
+    font-size: 16px;
+  }
 }
 
 </style>
