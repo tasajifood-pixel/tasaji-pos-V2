@@ -2013,7 +2013,7 @@ body{
 /* =====================================================
    SUPABASE
 ===================================================== */
-const supabase = window.supabase.createClient(
+const sb = window.supabase.createClient(
   "https://fpjfdxpdaqtopjorqood.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwamZkeHBkYXF0b3Bqb3Jxb29kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5NjU2NDUsImV4cCI6MjA3NjU0MTY0NX0.7cSIF32p9SHaHHlUcMFrrQSq7JBOdP4LneEvcMRrtXU"
 );
@@ -2320,7 +2320,7 @@ async function syncAllProductsToCache(){
     const size = 1000;
 
     while(true){
-      const { data, error } = await supabase
+      const { data, error } = await sb
         .from("master_items")
         .select("item_id,item_code,item_name,thumbnail,sell_price,barcode,available_qty")
         .order("item_name", { ascending:true })
@@ -2670,7 +2670,7 @@ document.addEventListener("click", (e) => {
 async function findProductByBarcode(barcode) {
   if (!barcode) return null;
 
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from("master_items")
     .select("item_id,item_code,item_name,thumbnail,sell_price,barcode,available_qty")
     .eq("barcode", barcode)
@@ -3005,7 +3005,7 @@ async function loadPriceMap() {
     return;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from("product_prices")
     .select("item_code, kategori_harga, harga");
 
@@ -3039,7 +3039,7 @@ async function loadPackingMap() {
     return;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from("product_packing")
     .select("item_code, pcs_per_karton");
 
@@ -3157,7 +3157,7 @@ if(!isOnline() || !supabaseOK){
     const size = 1000;
 
     while (true) {
-      const { data, error } = await supabase
+      const { data, error } = await sb
         .from("customers")
         .select("contact_id,contact_name,phone,category_id,category_display")
         .range(from, from + size - 1);
@@ -3842,7 +3842,7 @@ function backToEdit() {
 }
 
 async function saveJubelioPayloadToOrder(salesorderNo, payloadObj){
-  const { error } = await supabase
+  const { error } = await sb
     .from("pos_sales_orders")
     .update({
       jubelio_payload: payloadObj,
@@ -3862,7 +3862,7 @@ async function txnSyncJubelio(){
 
   const orderNo = TXN_SELECTED.salesorder_no;
 
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from("pos_sales_orders")
     .select("jubelio_payload,jubelio_synced,jubelio_error")
     .eq("salesorder_no", orderNo)
@@ -3879,7 +3879,7 @@ async function txnSyncJubelio(){
   }
 
   // tandai ulang untuk retry sync
-  const { error: e2 } = await supabase
+  const { error: e2 } = await sb
     .from("pos_sales_orders")
     .update({
       jubelio_synced: false,
@@ -3907,7 +3907,7 @@ async function generateSalesOrderNo() {
     String(today.getHours()).padStart(2, "0") +
     String(today.getMinutes()).padStart(2, "0");
 
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .rpc("get_next_daily_order_number", { p_date: dateForDb });
 
   if (error) {
@@ -3986,7 +3986,7 @@ async function hydrateCartItemIds(){
     const code = item.itemCode || item.code;
     if (!code) continue;
 
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from("master_items")
       .select("item_id")
       .eq("item_code", code)
@@ -4035,7 +4035,7 @@ jubelio_error: null,
 jubelio_payload: null
   };
 
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from("pos_sales_orders")
     .insert([payload])
     .select()
@@ -4077,7 +4077,7 @@ async function saveSalesOrderItems(salesorderNo) {
 
 
 
-  const { error } = await supabase
+  const { error } = await sb
     .from("pos_sales_order_items")
     .insert(itemsPayload);
 
@@ -4096,7 +4096,7 @@ async function saveSalesOrderPayments(salesorderNo) {
     amount: p.amount
   }));
 
-  const { error } = await supabase
+  const { error } = await sb
     .from("pos_sales_order_payments")
     .insert(paymentsPayload);
 
@@ -4272,7 +4272,7 @@ async function syncOfflineOrdersToServer(){
         jubelio_synced: false
       };
 
-      const { error: hErr } = await supabase
+      const { error: hErr } = await sb
         .from("pos_sales_orders")
         .insert([headerPayload]);
 
@@ -4290,7 +4290,7 @@ async function syncOfflineOrdersToServer(){
         location_id: -1
       }));
 
-      const { error: iErr } = await supabase
+      const { error: iErr } = await sb
         .from("pos_sales_order_items")
         .insert(itemsPayload);
 
@@ -4303,7 +4303,7 @@ async function syncOfflineOrdersToServer(){
         amount: p.amount
       }));
 
-      const { error: pErr } = await supabase
+      const { error: pErr } = await sb
         .from("pos_sales_order_payments")
         .insert(payPayload);
 
@@ -4744,7 +4744,7 @@ async function selectTransaction(orderNo){
   txnDetailBadge.innerHTML = "";
 
   // header
-  const { data: header, error: e1 } = await supabase
+  const { data: header, error: e1 } = await sb
     .from("pos_sales_orders")
     .select("*")
     .eq("salesorder_no", orderNo)
@@ -4758,7 +4758,7 @@ async function selectTransaction(orderNo){
   }
 
   // items
-  const { data: items, error: e2 } = await supabase
+  const { data: items, error: e2 } = await sb
     .from("pos_sales_order_items")
     .select("item_id,item_code,description,qty_in_base,price,amount")
     .eq("salesorder_no", orderNo)
@@ -4767,7 +4767,7 @@ async function selectTransaction(orderNo){
   if (e2) console.error("❌ load items", e2);
 
   // payments
-  const { data: pays, error: e3 } = await supabase
+  const { data: pays, error: e3 } = await sb
     .from("pos_sales_order_payments")
     .select("payment_method,amount")
     .eq("salesorder_no", orderNo);
@@ -5483,7 +5483,7 @@ Object.entries(appliedObj).forEach(([k, amt]) => {
         omzet += (orders || []).reduce((s,o)=> s + Number(o.grand_total||0), 0);
 
         if(orderNos.length){
-          const { data: pays, error: e2 } = await supabase
+          const { data: pays, error: e2 } = await sb
             .from("pos_sales_order_payments")
             .select("salesorder_no,payment_method,amount")
             .in("salesorder_no", orderNos);
@@ -5600,6 +5600,7 @@ Object.entries(appliedObj).forEach(([k, amt]) => {
 
 </body>
 </html>
+
 
 
 
